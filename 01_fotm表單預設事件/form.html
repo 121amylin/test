@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 單一 input type="text" ，沒有submit一樣可以送出。 -->
+    <!-- <form action="send.html">
+      <input type="text" />
+    </form> -->
+
+    <!-- 單一 input type="text" ，checkbox、select...，只要focus在input上，按下enter沒有submit一樣可以送出。 -->
+    <!-- <form action="send.html">
+      <input type="text" />
+      <input type="checkbox" name="" id="" value="123" />123
+      <select name="" id="">
+        <option value="123">123</option>
+      </select>
+    </form> -->
+
+    <!-- 兩個以上 input type="text" ，沒有submit無法送出。 -->
+    <!-- <form action="send.html">
+      <input type="text" />
+      <input type="text" />
+    </form> -->
+
+    <!-- 兩個以上 input type="text" ，需要使用submit送出。 -->
+    <form action="send.html">
+      <input type="text" />
+      <input type="text" />
+      <input type="submit" value="送出" />
+    </form>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 【例一】 id或name屬性設置為submit 會干擾用javascript送出表單 -->
+    <!-- 可以用javaScript送出表單(a連結送出) -->
+    <!-- <form action="send.html" id="myForm">
+      <input type="text" />
+      <a href="#" onclick="gosubmit()">a 送出</a>
+      <button type="submit">button type='submit' 送出</button>
+      <input type="submit" value="input type='submit'送出" />
+    </form>
+    <script>
+      function gosubmit() {
+        document.querySelector("#myForm").submit();
+      }
+    </script> -->
+
+    <!-- 【例二】 id或name屬性設置為submit 會干擾用javascript送出表單 -->
+    <!--當form表單裡面有屬性name="submit"，用javaScript送出表單(a連結送出)會失效-->
+    <!-- <form action="send.html" id="myForm">
+      <input type="text" name="submit">
+      <input type="text" />
+      <a href="#" onclick="gosubmit()">a 送出</a>
+      <button type="submit">button type='submit' 送出</button>
+      <input type="submit" value="input type='submit'送出" />
+    </form>
+    <script>
+      function gosubmit() {
+        document.querySelector("#myForm").submit();
+      }
+    </script> -->
+
+    <!-- 【例三】 id或name屬性設置為submit 會干擾用javascript送出表單 -->
+    <!--當form表單裡面有屬性id="submit"，用javaScript送出表單(a連結送出)會失效-->
+    <!-- <form action="send.html" id="myForm">
+      <input type="text" id="submit" />
+      <input type="text" />
+      <a href="#" onclick="gosubmit()">a 送出</a>
+      <button type="submit">button type='submit' 送出</button>
+      <input type="submit" value="input type='submit'送出" />
+    </form>
+    <script>
+      function gosubmit() {
+        document.querySelector("#myForm").submit();
+      }
+    </script> -->
+
+    <!-- 【例四】  表單送去前處理-->
+    <!-- a連結送出沒辦法執行submitHHandle -->
+    <!-- <form action="send.html" id="myForm" onsubmit="submitHHandle()">
+      <a href="#" onclick="gosubmit()">a 送出</a>
+      <button type="submit">button type='submit' 送出</button>
+      <input type="submit" value="input type='submit'送出" />
+    </form>
+    <script>
+      function gosubmit() {
+        document.querySelector("#myForm").submit();
+      }
+
+      function submitHHandle() {
+        alert("表單即將送出");
+      }
+    </script> -->
+
+    <!-- 【例五】  表單送去前處理-->
+    <form action="send.html" id="myForm" onsubmit="submitHHandle()">
+      <a href="#" onclick="gosubmit()">a 送出</a>
+      <button type="submit">button type='submit' 送出</button>
+      <input id="send" type="submit" value="input type='submit'送出" />
+    </form>
+    <script>
+      function gosubmit() {
+        // 解法一(Tommy)=>用JS生成一個input
+        // let addinput = document.createElement("input");
+        // addinput.setAttribute("type", "submit");
+        // console.log(addinput)
+        // document.querySelector("#myForm").appendChild(addinput);
+        // addinput.click();
+
+        
+        // 解法二=>用JS call 其他的submit元素，但前提是要畫面上有可以執行的元素
+        document.querySelector("#send").click();
+      }
+
+      function submitHHandle() {
+        alert("表單即將送出");
+      }
+    </script>
+  </body>
+</html>
