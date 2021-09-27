@@ -1,58 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
+  <body>
+    <div id="app">
+      <router-link to="/user/456?uname=amy">User456</router-link>
+      <router-link
+        :to="{
+        uname:'user',
+        params:{
+          uid:789
+        },
+        query:{
+          uname:'amy'
+        }
+      }"
+        >User</router-link
+      >
+      <router-view></router-view>
+      <hr />
+      <User uid="aaa" uname="123"></User>
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"
+      integrity="sha512-PyKhbAWS+VlTWXjk/36s5hJmUJBxcGY/1hlxg6woHD/EONP2fawZRKmvHdTGOWPKTqk3CPSUPh7+2boIBklbvw=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.5.2/vue-router.js"
+      integrity="sha512-jYzfS4K46/AOKp6DKwi+iTLOYCV643Xr2GgaWox3Ag+7YukKfAq+22oelq/LfDYve/jDFjvvUp0WpXXTmbEp3w=="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const User = {
+        props: ["uid", "uname"],
+        // 耦合
+        // template:
+        //   "<div>User params.uid : {{ $route.params.uid }}--query.uname : {{ $route.query.uname }}</div>",
+        
+        // 解耦合
+        template:
+          "<div>User params.uid : {{ this.uid }}--query.uname : {{ this.uname }}</div>",
+      };
 
-<body>
-  <div id="app">
-    <router-link to="/user/456">User456</router-link>
-    <router-view name='sidebar'></router-view>
-    <router-view></router-view>
-    <hr>
-    <User></User>
-  </div>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'
-    integrity='sha512-PyKhbAWS+VlTWXjk/36s5hJmUJBxcGY/1hlxg6woHD/EONP2fawZRKmvHdTGOWPKTqk3CPSUPh7+2boIBklbvw=='
-    crossorigin='anonymous'></script>
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.5.2/vue-router.js'
-    integrity='sha512-jYzfS4K46/AOKp6DKwi+iTLOYCV643Xr2GgaWox3Ag+7YukKfAq+22oelq/LfDYve/jDFjvvUp0WpXXTmbEp3w=='
-    crossorigin='anonymous'></script>
-  <script>
-    // const User = {
-    //   template: '<div>User {{ $route.params.id }}</div>'
-    // }
-    // const router = new VueRouter({
-    //   routes: [{ path: '/user/:id', component: User }]
-    // })
+      const routes = [
+        {
+          path: "/user/:uid",
+          components: { default: User },
 
-    const User = {
-      template: '<div>User {{ $route.params.id }}</div>'
-    }
+          // 一、布林型  paramd  可以使用；query 進不來
+          // props: { default: true },
 
-    const Sidebar = {
-      template: '<div>Sidebar</div>'
-    }
-    const routes = [
-      {
-        path: '/user/:id',
-        components: { default: User, sidebar: Sidebar },
-        props: { default: true, sidebar: false }
-      }
-    ]
-    const router = new VueRouter({
-      routes
-    })
-    new Vue({
-      el: '#app',
-      router,
-      components: { User }
-    })
-  </script>
-</body>
 
+          // 二、物件型 => 比較偏靜態資料
+          // props: {
+          //   default: {
+          //     uid: 123,
+          //     uname: "ann",
+          //   },
+          // },
+
+
+          // 三、函式型=>彈性高
+          props: {
+            default: (route) => ({
+              uid: route.params.uid,
+              uname: route.query.uname,
+            }),
+          },
+          name: "user",
+        },
+      ];
+      const router = new VueRouter({
+        routes,
+      });
+      new Vue({
+        el: "#app",
+        router,
+        components: { User },
+      });
+    </script>
+  </body>
 </html>
