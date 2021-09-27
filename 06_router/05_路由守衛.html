@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <router-link to="/user">user</router-link>
+       <router-link to="/news/456">news 456</router-link>
+       <router-link to="/news/789">news 789</router-link>
+      <router-view></router-view>
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"
+      integrity="sha512-PyKhbAWS+VlTWXjk/36s5hJmUJBxcGY/1hlxg6woHD/EONP2fawZRKmvHdTGOWPKTqk3CPSUPh7+2boIBklbvw=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.5.2/vue-router.js"
+      integrity="sha512-jYzfS4K46/AOKp6DKwi+iTLOYCV643Xr2GgaWox3Ag+7YukKfAq+22oelq/LfDYve/jDFjvvUp0WpXXTmbEp3w=="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const user = { template: `<div>user</div>` };
+      const news = {
+        template: `<div>news {{$route.params.id}}</div>`,
+        beforeRouteEnter(to, from, next) {
+          console.log("befortRouteEnter");
+          next();
+        },
+        beforeRouteLeave(to, from, next) {
+          console.log("beforeRouteLeave");
+          next();
+        },
+        beforeRouteUpdate(to, from, next) {
+          console.log("beforeRouteUpdate");
+          next();
+        },
+      };
+      const routes = [
+        {
+          path: "/user",
+          component: user,
+          beforeEnter: (to, from, next) => {
+            // console.log(to);
+            // console.log(`beforeEnter_TO : ${to.path}`);
+            // console.log(from);
+            // console.log(`beforeEnter_FORM :  ${from.path}`);
+            next();
+          },
+        },
+        {
+          path: "/news/:id",
+          component: news,
+        },
+      ];
+      const router = new VueRouter({ routes });
+
+      //一、【router.beforeEach】
+      router.beforeEach((to, from, next) => {
+        // console.log(to);
+        // console.log(`beforeEach_TO : ${to.path}`);
+        // console.log(from);
+        // console.log(`beforeEach_FORM :  ${from.path}`);
+        next();
+      });
+
+      //二、【router.afterEach  **** afterEach沒有next() ***
+      router.afterEach((to, from) => {
+        // console.log(`afterEach_TO : ${to.path}`);
+        // console.log(`afterEach_FORM :  ${from.path}`);
+      });
+      const vm = new Vue({
+        el: "#app",
+        router,
+      });
+    </script>
+  </body>
+</html>
