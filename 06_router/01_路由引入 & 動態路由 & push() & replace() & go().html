@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>路由引入 & 動態路由 & push() & replace() & go()</title>
+</head>
+
+<body>
+  <div id="app">
+    <p>【part 1 路由引入 & 動態路由】</p>
+    <router-link to="/post">post</router-link>
+    <router-link to="/news">news</router-link>
+    <router-link to="/news/1">news/1</router-link>
+    <hr>
+    <p>【part 2 - tag & push()】</p>
+    <router-link to="/news/123" tag="button">news 123 (用router-link + tag )</router-link>
+    <button @click="btnHandle">news 456 (要用button要自己做button+methods)</button>
+    <hr>
+    <p>【part 3 go()】</p>
+    <a href="javascript:;" @click="goback">BACK</a>
+    <hr>
+    <p>【part 4 replace 沒有歷史紀錄(不能回上一步)】</p>
+    <router-link to="/post" replace>post</router-link>
+    <router-link to="/news" replace>news</router-link>
+    <router-link to='/news/123' replace>news 123</router-link>
+    <button @click="gotonews456_replace">news 456</button>
+
+    <router-view></router-view>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'
+    integrity='sha512-PyKhbAWS+VlTWXjk/36s5hJmUJBxcGY/1hlxg6woHD/EONP2fawZRKmvHdTGOWPKTqk3CPSUPh7+2boIBklbvw=='
+    crossorigin='anonymous'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.5.2/vue-router.js'
+    integrity='sha512-jYzfS4K46/AOKp6DKwi+iTLOYCV643Xr2GgaWox3Ag+7YukKfAq+22oelq/LfDYve/jDFjvvUp0WpXXTmbEp3w=='
+    crossorigin='anonymous'></script>
+  <script>
+    const post = {
+      template: '<div>post</div>'
+    }
+    const news = {
+      template: '<div>news</div>'
+    }
+    const newsList = {
+      template: `<div>newsList : {{$route.params.id}}</div>`
+    }
+    const routes = [
+      {
+        path: '/post',
+        component: post
+      },
+      {
+        path: '/news',
+        components: {
+          default: news
+        },
+      },
+      {
+        path: '/news/:id',
+        component: newsList
+      }
+    ]
+    const router = new VueRouter({
+      routes
+    })
+    const vm = new Vue({
+      el: '#app',
+      router,
+      methods: {
+        btnHandle() {
+          this.$router.push('/news/456')
+        },
+        goback() {
+          this.$router.go(-1)
+        },
+        gotonews456_replace() {
+          this.$router.replace('/news/456')
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app">
+    <router-link to="/user/456">User456</router-link>
+    <router-view name='sidebar'></router-view>
+    <router-view></router-view>
+    <hr>
+    <User></User>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'
+    integrity='sha512-PyKhbAWS+VlTWXjk/36s5hJmUJBxcGY/1hlxg6woHD/EONP2fawZRKmvHdTGOWPKTqk3CPSUPh7+2boIBklbvw=='
+    crossorigin='anonymous'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.5.2/vue-router.js'
+    integrity='sha512-jYzfS4K46/AOKp6DKwi+iTLOYCV643Xr2GgaWox3Ag+7YukKfAq+22oelq/LfDYve/jDFjvvUp0WpXXTmbEp3w=='
+    crossorigin='anonymous'></script>
+  <script>
+    // const User = {
+    //   template: '<div>User {{ $route.params.id }}</div>'
+    // }
+    // const router = new VueRouter({
+    //   routes: [{ path: '/user/:id', component: User }]
+    // })
+
+    const User = {
+      template: '<div>User {{ $route.params.id }}</div>'
+    }
+
+    const Sidebar = {
+      template: '<div>Sidebar</div>'
+    }
+    const routes = [
+      {
+        path: '/user/:id',
+        components: { default: User, sidebar: Sidebar },
+        props: { default: true, sidebar: false }
+      }
+    ]
+    const router = new VueRouter({
+      routes
+    })
+    new Vue({
+      el: '#app',
+      router,
+      components: { User }
+    })
+  </script>
+</body>
+
+</html>

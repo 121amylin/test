@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript 資料處理</title>
+</head>
+
+<body>
+
+  <script>
+    //用 findIndex 查找資料，不用自己設置指針+跑回圈  (point + foreach)
+    const db = [
+      {
+        id: 1,
+        content: {
+          title: "amy",
+          age: 28
+        }
+      }
+    ]
+    const fun = item => item.id === 1
+    console.log(db.findIndex(fun))
+    console.log(db[db.findIndex(fun)].content)
+
+    //MDN findIndex
+    //https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
+
+    // const array1 = [5, 12, 8, 130, 44];
+    // const isLargeNumber = (element) => element > 13;
+    // console.log(array1.findIndex(isLargeNumber));
+
+
+
+
+    // ============================================================================================================================
+    // ============================================================================================================================
+    // return 一定要放在function 裡面!!
+    // return 後面的alert會執行!!
+
+
+    // https://blog.csdn.net/qq_16339527/article/details/52004269
+
+    //10個新手必知的 JavaScript 實用技巧
+    // https://medium.com/i-am-mike/10%E5%80%8B%E6%96%B0%E6%89%8B%E5%BF%85%E7%9F%A5%E7%9A%84-javascrip-%E5%AF%A6%E7%94%A8%E6%8A%80%E5%B7%A7-75b55d7c3e47
+
+    //整合 <script> 載入的進入點，主程式不要分檔寫，以確保程式流程 !
+    //不要操作原始陣列 (pure function)
+    //使用變數來儲存this來調用，而不是bind
+
+
+    // var aaa = ''
+    // function text() {
+    //   if (aaa == "") {
+    //     return alert('123')   //return 後面的alert會執行
+    //   };
+    // }
+    // text()
+
+
+
+    // ============================================================================================================================
+    // ============================================================================================================================
+    // Javascript 將資料進行分類方法
+    // https://ithelp.ithome.com.tw/articles/10231184
+
+
+    const data = [
+      { id: 'one', type: 0 },
+      { id: 'two', type: 0 },
+      { id: 'three', type: 2 },
+      { id: 'four', type: 1 },
+      { id: 'five', type: 2 },
+      { id: 'six', type: 0 },
+      { id: 'seven', type: 0 },
+      { id: 'eight', type: 1 },
+      { id: 'nine', type: 2 },
+      { id: 'ten', type: 1 },
+    ]
+
+    // 【解一】
+    // let typeOneList = []
+    // let typeTwoList = []
+    // let typeThreeList = []
+
+    // data.forEach(item => {
+    //   switch (item.type) {
+    //     case 0:
+    //       typeOneList.push(item)
+    //       break
+    //     case 1:
+    //       typeTwoList.push(item)
+    //       break
+    //     case 2:
+    //       typeThreeList.push(item)
+    //       break
+    //   }
+    // })
+
+    // console.log(typeOneList)
+
+    // 【解二】
+    let result = {}
+    let keys = ['type1', 'type2', 'type3']
+
+    data.forEach(item => {
+      const originData = result[keys[item.type]] || []
+
+      //方法一 : 可以用解構賦值添加新數據
+      result[keys[item.type]] = [...originData, item]   // [...originData, item]用法就像是直接使originData.push()方式
+
+      //方法二 : 也可以用push添加新數據
+      // originData.push(item)
+      // result[keys[item.type]] = originData
+    })
+    console.log(result)
+
+  </script>
+</body>
+
+</html>

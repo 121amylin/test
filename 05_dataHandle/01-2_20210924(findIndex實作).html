@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const db = [
+      {
+        id: 1,
+        content: {
+          title: "amy",
+          age: 28
+        }
+      }
+    ]
+
+    let id = db.findIndex(item => {
+      return item.id === 1
+    })
+
+    console.log(db[id].content)
+
+
+  </script>
+</body>
+
+</html>

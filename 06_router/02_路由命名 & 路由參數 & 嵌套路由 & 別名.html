@@ -1,0 +1,139 @@
+<!-- https://www.bbsmax.com/topic/%E8%B7%AF%E7%94%B1%E7%BB%84%E4%BB%B6%E5%92%8C%E8%B7%AF%E7%94%B1-%E8%A7%A3%E8%80%A6%E7%9A%84%E6%84%8F%E4%B9%89/ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>路由命名 & 路由參數 & 嵌套路由 & 別名</title>
+</head>
+
+<body>
+  <div id="app">
+    <p>路由命名 & 路由參數</p>
+    <router-link :to='{name:"list"}'>list</router-link>
+
+    <!-- http://127.0.0.1:5500/02_router/02_middle-level.html#/more/11?count=10 -->
+    <router-link :to='{name:"more",params:{id:123},query:{count:10}}'>more 123</router-link>
+
+    <button @click='more456'>more 456</button>
+
+
+    <hr>
+    <p>嵌套路由</p>
+    <router-link :to="{name:'about_into'}">about_into</router-link>
+    <router-link :to="{name:'about_work'}">about_work</router-link>
+
+    <hr>
+    <p>別名</p>
+    <router-link to='/shopping'>shopping</router-link>
+    <router-link to='/active'>active</router-link>
+    <router-view></router-view>
+  </div>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'
+    integrity='sha512-PyKhbAWS+VlTWXjk/36s5hJmUJBxcGY/1hlxg6woHD/EONP2fawZRKmvHdTGOWPKTqk3CPSUPh7+2boIBklbvw=='
+    crossorigin='anonymous'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue-router/3.5.2/vue-router.js'
+    integrity='sha512-jYzfS4K46/AOKp6DKwi+iTLOYCV643Xr2GgaWox3Ag+7YukKfAq+22oelq/LfDYve/jDFjvvUp0WpXXTmbEp3w=='
+    crossorigin='anonymous'></script>
+  <script>
+    const list = {
+      template: `<div>list</div>`
+    }
+
+    const more = {
+      template: `<div>more {{$route.params.id}}</div>`
+    }
+    const about = {
+      template: `<div>about {{$route.name}}</div>`
+    }
+
+    const about_into = {
+      template: `<div>about_into</div>`
+    }
+
+    const about_work = {
+      template: `<div>about_work</div>`
+    }
+    const active = {
+      template: `<div>shopping & active</div>`
+    }
+    const product = {
+      template: `<div>product</div>`
+    }
+    const routes = [
+      //命名路由
+      {
+        path: '/list',
+        component: list,
+        name: "list"
+      },
+      {
+        path: '/more/:id',
+        component: more,
+        name: 'more'
+      },
+      // 嵌套路由
+      {
+        path: '/about',
+        component: about,
+        children: [
+          {
+            path: 'about_into',
+            component: about_into,
+            name: 'about_into'
+          }, {
+            path: 'about_work',
+            component: about_work,
+            name: 'about_work'
+          }
+        ]
+      },
+      //別名
+      //別名沒辦法和命名路由一起用
+      {
+        path: '/shopping',
+        component: active,
+        alias: '/active',
+        // name: 'shopping'
+      },
+      //路由參數
+      {
+        path: '/product',
+        component: product,
+        props: {
+          hasProps: true
+        }
+      },
+      //重定向
+      //1.可以是一個路徑位置
+      //2.重定向的目标也可以是一个命名的路由
+      //3.甚至是一个方法，动态返回重定向目标
+      {
+        path: '*',
+        redirect: '/about/about_into'
+      }
+
+    ]
+    const router = new VueRouter({
+      routes
+    })
+    const vm = new Vue({
+      el: "#app",
+      router,
+      methods: {
+        more456() {
+          this.$router.push({
+            params: { id: 456 },
+            query: { name: "amy" }
+          })
+        }
+      }
+
+    })
+
+  </script>
+</body>
+
+</html>
