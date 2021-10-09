@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app"> <component_a></component_a><component_b></component_b>
+
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"
+      integrity="sha512-PyKhbAWS+VlTWXjk/36s5hJmUJBxcGY/1hlxg6woHD/EONP2fawZRKmvHdTGOWPKTqk3CPSUPh7+2boIBklbvw=="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let store = {
+        state: {
+          count: 0,
+        },
+        addCountHanlde() {
+          this.state.count ++;
+        },
+      };
+
+      const component_a = {
+        template: `<div>{{shatedate.count}}</div>`,
+        data() {
+          return {
+            shatedate: store.state,
+          };
+        },
+      };
+
+      const component_b = {
+        template: `<div>
+              <p>{{shatedate.count}}</p>
+              <button @click="addCountHandle">add</button>
+              </div>`,
+        data() {
+          return {
+            shatedate: store.state,
+          };
+        },
+        methods: {
+          addCountHandle() {
+            store.addCountHanlde();
+          },
+        },
+      };
+      new Vue({
+        el: "#app",
+        components: {
+          component_a,
+          component_b,
+        },
+      });
+    </script>
+  </body>
+</html>

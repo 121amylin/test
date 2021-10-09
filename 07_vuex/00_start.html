@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>{{getStore}}</h1>
+      <button @click="commitAddCount">ADD</button>
+      <input type="text" v-model='num'>
+      <button @click="commicSetCount(num)">SET</button>
+    </div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"
+      integrity="sha512-PyKhbAWS+VlTWXjk/36s5hJmUJBxcGY/1hlxg6woHD/EONP2fawZRKmvHdTGOWPKTqk3CPSUPh7+2boIBklbvw=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/vuex/3.6.2/vuex.js"
+      integrity="sha512-i48GtNrU5tVNKFkvIT3nArzgcIYGLxb0t6Ok+yu6yybHksvifmC+mmT2c3II7PZgUsA5sFnxROrkeM5Yt46g3A=="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      const store = new Vuex.Store({
+        state: {
+          count: 0,
+        },
+        mutations: {
+          addCount(state) {
+            state.count++;
+          },
+          setCount(state,props){
+            state.count=props
+          }
+        },
+      });
+      new Vue({
+        el: "#app",
+        store,
+        data() {
+          return {
+            num:0
+          }
+        },
+        computed: {
+          getStore() {
+            return this.$store.state.count;
+          },
+        },
+        methods: {
+          commitAddCount() {
+            this.$store.commit("addCount");
+          },
+          commicSetCount(props){
+            this.$store.commit('setCount',props)
+          }
+        },
+      });
+    </script>
+  </body>
+</html>
