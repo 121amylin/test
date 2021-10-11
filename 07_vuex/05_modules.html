@@ -7,7 +7,24 @@
     <title>Document</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <p>{{getStore}}</p>
+      <p>ROOT: {{getStore.num}}</p>
+      <p>A: {{getStore.a.num}}</p>
+      <p>B: {{getStore.b.num}}</p>
+      <p>C: {{getStore.c.num}}</p>
+      <p>B2: {{getStore.b.b2.num}}</p>
+      <p v-if="getStore.haveF">F: {{getStore.f.num}}</p>
+      <button @click="rootadd">ROOT ADD</button>
+      <button @click="moduled">moduled test</button>
+      <button @click="moduleBadd">moduleB ADD</button>
+      <button @click="moduleB2add">moduleB2 ADD</button>
+      <button @click="targetF">target F</button>
+      <hr />
+      <p>{{num}}</p>
+      <p>{{name}}</p>
+      <p>{{age}}</p>
+    </div>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"
       integrity="sha512-PyKhbAWS+VlTWXjk/36s5hJmUJBxcGY/1hlxg6woHD/EONP2fawZRKmvHdTGOWPKTqk3CPSUPh7+2boIBklbvw=="
@@ -19,8 +36,141 @@
       crossorigin="anonymous"
     ></script>
     <script>
+      const moduleA = {
+        state: () => ({
+          num: 0,
+        }),
+        mutations: {
+          ADDNUM(state) {
+            state.num += 1;
+          },
+        },
+      };
+      const moduleB2 = {
+        namespaced: true,
+        state: {
+          num: 0,
+        },
+        mutations: {
+          ADDNUM(state) {
+            state.num += 3;
+          },
+        },
+      };
+      const moduleB = {
+        namespaced: true,
+        state: {
+          num: 0,
+        },
+        mutations: {
+          ADDNUM(state) {
+            state.num += 2;
+          },
+        },
+        modules: {
+          b2: moduleB2,
+        },
+      };
+      const moduleC = {
+        state: {
+          num: 0,
+        },
+        mutations: {
+          ADDNUM(state) {
+            state.num += 3;
+          },
+        },
+      };
+      const moduleD = {
+        state: {
+          num: 0,
+        },
+        mutations: {
+          ADDNUM(state) {
+            state.num += 3;
+          },
+        },
+        actions: {
+          test({ rootState }) {
+            console.log(rootState);
+            rootState.c.num++;
+          },
+        },
+      };
+
+      const moduleE = {
+        namespaced: true,
+        state: {
+          num: 0,
+          name: "amy",
+          age: 27,
+        },
+      };
+      const moduleF = {
+        state: () => ({
+          num: 0,
+        }),
+        mutations: {
+          ADDNUM(state) {
+            state.num += 1;
+          },
+        },
+      };
+      const store = new Vuex.Store({
+        state: {
+          haveF: false,
+          num: 0,
+        },
+        modules: {
+          a: moduleA,
+          b: moduleB,
+          c: moduleC,
+          d: moduleD,
+          e: moduleE,
+          // f: moduleF,
+        },
+        mutations: {
+          ADDNUM(state) {
+            state.num += 1;
+          },
+        },
+      });
       new Vue({
         el: "#app",
+        store,
+        computed: {
+          getStore() {
+            return this.$store.state;
+          },
+          ...Vuex.mapState("e", {
+            num: "num",
+            name: "name",
+            age: "age",
+          }),
+        },
+        methods: {
+          rootadd() {
+            this.$store.commit("ADDNUM");
+          },
+          moduled() {
+            this.$store.dispatch("test");
+          },
+          moduleBadd() {
+            this.$store.commit("b/ADDNUM");
+          },
+          moduleB2add() {
+            this.$store.commit("b/b2/ADDNUM");
+          },
+          targetF() {
+            if (!this.$store.hasModule("f")) {
+              this.$store.registerModule("f", moduleF);
+              this.getStore.haveF = true;
+            } else {
+              this.$store.unregisterModule("f", moduleF);
+              this.getStore.haveF = false;
+            }
+          },
+        },
       });
     </script>
   </body>
